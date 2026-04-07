@@ -13,7 +13,17 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'Georgia', 'serif'],
+      },
       colors: {
+        'warm-cream': 'hsl(var(--warm-cream))',
+        'warm-gold': 'hsl(var(--warm-gold))',
+        'warm-gold-light': 'hsl(var(--warm-gold-light))',
+        'warm-gold-dark': 'hsl(var(--warm-gold-dark))',
+        'navy': 'hsl(var(--navy))',
+        'top-bar': 'hsl(var(--top-bar))',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
