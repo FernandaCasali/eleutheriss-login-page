@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import fundoBg from "@/assets/fundo.png";
-import logoIcon from "@/assets/logo-icon.png";
+import logoIcon from "@/assets/$.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");

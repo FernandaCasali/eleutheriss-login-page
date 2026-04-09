@@ -1,4 +1,5 @@
 import { useState } from "react";
+import logo from "@/assets/$.png";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -17,7 +18,8 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="font-display text-2xl font-bold text-gradient-gold">
+        <Link to="/" className="flex items-center gap-3 font-display text-2xl font-bold text-gradient-gold">
+          <img src={logo} alt="Logo Eleutheriss" className="h-8 w-8 object-contain" />
           Eleutheriss
         </Link>
 

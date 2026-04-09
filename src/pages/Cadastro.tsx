@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import fundoBg from "@/assets/fundo.png";
-import logoIcon from "@/assets/logo-icon.png";
+import logoIcon from "@/assets/$.png";
 
 const Cadastro = () => {
   const [name, setName] = useState("");
