@@ -96,13 +96,13 @@ const Cadastro = () => {
         style={{
           position: "relative",
           zIndex: 10,
-          width: "100%",
-          maxWidth: "420px",
-          margin: "24px 16px",
+          width: "60%",
+          maxWidth: "460px",
+          margin: "30px 16px",
           background: "#F5F0E4",
           borderRadius: "20px",
           boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
-          padding: "36px 36px 28px 36px",
+          padding: "20px 36px 28px 36px",
         }}
       >
         {/* Cabeçalho */}
