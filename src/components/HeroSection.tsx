@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import heroWoman from "@/assets/hero-woman.png";
-import goldCoinsBg from "@/assets/gold-coins-bg.png";
+import goldCoinsBg from "@/assets/rain_coins.png";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -8,7 +8,7 @@ const HeroSection = () => {
   return (
     <section id="inicio" className="relative min-h-screen flex items-center gradient-hero overflow-hidden pt-16">
       {/* Gold coins background with gradient fade */}
-      {/* <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <img
           src={goldCoinsBg}
           alt=""
@@ -21,7 +21,7 @@ const HeroSection = () => {
             WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 60% 40%, black 30%, transparent 88%)",
           }}
         />
-      </div> */}
+      </div>
 
       <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent to-[hsl(38_35%_96%)] pointer-events-none" />
 
