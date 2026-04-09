@@ -1,115 +1,180 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
-import laurelWreath from "@/assets/laurel-wreath.png";
+import fundoBg from "@/assets/fundo.png";
 import logoIcon from "@/assets/logo-icon.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password });
+    console.log("Login attempt:", { email, password, rememberMe });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[#1a1a1a]">
-      {/* Laurel wreath background */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <img
-          src={laurelWreath}
-          alt=""
-          width={1024}
-          height={1024}
-          className="w-[600px] h-[600px] object-contain opacity-40"
-        />
-      </div>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden",
+        backgroundImage: `url(${fundoBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: "#1a1a1a",
+      }}
+    >
+      {/* Overlay escuro para não competir com o card */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundColor: "rgba(20, 18, 14, 0.45)",
+        }}
+      />
 
       {/* Card */}
-      <div className="relative z-10 w-full max-w-md mx-4 bg-card rounded-2xl shadow-2xl p-8 sm:p-10">
-        <div className="space-y-1 mb-8">
-          <h1 className="text-3xl font-display font-bold text-foreground">
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          width: "100%",
+          maxWidth: "420px",
+          margin: "0 16px",
+          background: "#F5F0E4",
+          borderRadius: "20px",
+          boxShadow: "0 25px 60px rgba(0,0,0,0.5)",
+          padding: "40px 36px 32px 36px",
+        }}
+      >
+        {/* Cabeçalho */}
+        <div style={{ marginBottom: "28px" }}>
+          <h1
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 700,
+              fontSize: "28px",
+              color: "#1a1a1a",
+              margin: 0,
+              marginBottom: "6px",
+              lineHeight: 1.2,
+            }}
+          >
             Bem-Vinda de volta!
           </h1>
-          <p className="text-primary text-sm">
+          <p style={{ fontSize: "13px", color: "#8B2246", fontWeight: 500, margin: 0 }}>
             Bem-vinda de volta! Por favor, insira seus dados.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium text-foreground">
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          {/* E-mail */}
+          <div>
+            <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#1a1a1a", marginBottom: "6px" }}>
               E-mail
-            </Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="email"
+            </label>
+            <div style={{ position: "relative" }}>
+              <Mail style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, color: "#9a8f7e" }} />
+              <input
                 type="email"
                 placeholder="seu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 h-12 rounded-xl border-border bg-background"
                 required
+                style={{
+                  width: "100%", height: "46px", paddingLeft: "38px", paddingRight: "14px",
+                  border: "1.5px solid #D9D0BE", borderRadius: "10px", background: "#FDFAF5",
+                  fontSize: "14px", color: "#1a1a1a", outline: "none", boxSizing: "border-box",
+                  fontFamily: "inherit",
+                }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#C89B30")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "#D9D0BE")}
               />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium text-foreground">
+          {/* Senha */}
+          <div>
+            <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#1a1a1a", marginBottom: "6px" }}>
               Senha
-            </Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="password"
+            </label>
+            <div style={{ position: "relative" }}>
+              <Lock style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", width: 16, height: 16, color: "#9a8f7e" }} />
+              <input
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 pr-10 h-12 rounded-xl border-border bg-background"
                 required
+                style={{
+                  width: "100%", height: "46px", paddingLeft: "38px", paddingRight: "42px",
+                  border: "1.5px solid #D9D0BE", borderRadius: "10px", background: "#FDFAF5",
+                  fontSize: "14px", color: "#1a1a1a", outline: "none", boxSizing: "border-box",
+                  fontFamily: "inherit",
+                }}
+                onFocus={(e) => (e.currentTarget.style.borderColor = "#C89B30")}
+                onBlur={(e) => (e.currentTarget.style.borderColor = "#D9D0BE")}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "#9a8f7e", padding: 0, display: "flex" }}
               >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                {showPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
               </button>
             </div>
           </div>
 
-          <div className="flex items-center justify-between text-sm">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" className="rounded border-border accent-primary" />
-              <span className="text-muted-foreground">Re-lembre</span>
+          {/* Re-lembre / Esqueci */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                style={{ accentColor: "#C89B30", width: 15, height: 15, cursor: "pointer" }}
+              />
+              <span style={{ fontSize: "13px", color: "#6b6253" }}>Re-lembre</span>
             </label>
-            <a href="#" className="text-primary hover:text-primary/80 font-medium transition-colors">
+            <a href="#" style={{ fontSize: "13px", color: "#8B2246", fontWeight: 500, textDecoration: "none" }}>
               Esqueci a senha
             </a>
           </div>
 
-          <Button type="submit" variant="hero" size="lg" className="w-full h-12 text-base rounded-full">
+          {/* Botão */}
+          <button
+            type="submit"
+            style={{
+              width: "100%", height: "46px",
+              background: "linear-gradient(135deg, #C89B30 0%, #E8BE45 100%)",
+              border: "none", borderRadius: "100px",
+              fontSize: "15px", fontWeight: 700, color: "#1a1a1a",
+              cursor: "pointer", letterSpacing: "0.02em",
+              fontFamily: "inherit",
+            }}
+          >
             Entrar
-          </Button>
+          </button>
         </form>
 
-        <p className="text-center text-sm text-muted-foreground mt-6">
+        {/* Link cadastro */}
+        <p style={{ textAlign: "center", fontSize: "13px", color: "#6b6253", marginTop: "20px", marginBottom: 0 }}>
           Ainda não possui uma conta?{" "}
-          <Link to="/cadastro" className="text-foreground font-bold hover:text-primary transition-colors">
+          <Link to="/cadastro" style={{ color: "#1a1a1a", fontWeight: 700, textDecoration: "none" }}>
             Cadastre-se
           </Link>
         </p>
 
-        {/* Logo icon at bottom */}
-        <div className="flex justify-center mt-6">
-          <img src={logoIcon} alt="Eleutheriss" width={48} height={48} className="w-12 h-12 object-contain" />
+        {/* Logo */}
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "18px" }}>
+          <img src={logoIcon} alt="Eleutheriss" style={{ width: 44, height: 44, objectFit: "contain" }} />
         </div>
       </div>
     </div>

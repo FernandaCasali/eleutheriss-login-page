@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,41 +6,43 @@
 
 @layer base {
   :root {
-    --background: 40 20% 98%;
-    --foreground: 340 30% 15%;
+    /* Light mode - card colors (bege claro como no Figma) */
+    --background: 38 30% 95%;
+    --foreground: 20 15% 15%;
 
-    --card: 40 25% 97%;
-    --card-foreground: 340 30% 15%;
+    --card: 38 35% 96%;
+    --card-foreground: 20 15% 15%;
 
-    --popover: 40 20% 98%;
-    --popover-foreground: 340 30% 15%;
+    --popover: 38 30% 95%;
+    --popover-foreground: 20 15% 15%;
 
-    --primary: 43 85% 55%;
-    --primary-foreground: 340 50% 18%;
+    /* Gold/Dourado para botão e detalhes */
+    --primary: 42 90% 52%;
+    --primary-foreground: 20 15% 10%;
 
-    --secondary: 340 55% 28%;
-    --secondary-foreground: 40 30% 95%;
+    /* Vinho/Bordô para subtítulo e links */
+    --secondary: 340 60% 32%;
+    --secondary-foreground: 38 30% 95%;
 
-    --muted: 40 15% 93%;
-    --muted-foreground: 340 15% 45%;
+    --muted: 38 20% 90%;
+    --muted-foreground: 20 15% 50%;
 
-    --accent: 43 70% 90%;
-    --accent-foreground: 340 50% 20%;
+    --accent: 42 70% 88%;
+    --accent-foreground: 20 15% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 40 20% 88%;
-    --input: 40 20% 88%;
-    --ring: 43 85% 55%;
+    --border: 38 20% 82%;
+    --input: 38 20% 82%;
+    --ring: 42 90% 52%;
 
     --radius: 0.75rem;
 
-    --wine: 340 55% 28%;
-    --wine-light: 340 40% 45%;
-    --gold-glow: 43 90% 65%;
-    --gold-soft: 43 60% 92%;
-    --warm-bg: 40 30% 96%;
+    --wine: 340 60% 32%;
+    --wine-light: 340 45% 48%;
+    --gold: 42 90% 52%;
+    --gold-light: 42 95% 62%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -53,25 +55,25 @@
   }
 
   .dark {
-    --background: 340 30% 8%;
-    --foreground: 40 20% 95%;
-    --card: 340 25% 12%;
-    --card-foreground: 40 20% 95%;
-    --popover: 340 30% 8%;
-    --popover-foreground: 40 20% 95%;
-    --primary: 43 85% 55%;
-    --primary-foreground: 340 50% 18%;
-    --secondary: 340 55% 28%;
-    --secondary-foreground: 40 30% 95%;
-    --muted: 340 20% 18%;
-    --muted-foreground: 40 15% 65%;
-    --accent: 340 30% 20%;
-    --accent-foreground: 43 85% 55%;
+    --background: 20 10% 8%;
+    --foreground: 38 25% 92%;
+    --card: 20 10% 12%;
+    --card-foreground: 38 25% 92%;
+    --popover: 20 10% 8%;
+    --popover-foreground: 38 25% 92%;
+    --primary: 42 90% 52%;
+    --primary-foreground: 20 15% 10%;
+    --secondary: 340 60% 32%;
+    --secondary-foreground: 38 30% 95%;
+    --muted: 20 10% 20%;
+    --muted-foreground: 38 15% 60%;
+    --accent: 20 10% 22%;
+    --accent-foreground: 42 90% 52%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 340 20% 20%;
-    --input: 340 20% 20%;
-    --ring: 43 85% 55%;
+    --border: 20 10% 22%;
+    --input: 20 10% 22%;
+    --ring: 42 90% 52%;
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -103,21 +105,31 @@
   }
 
   .gradient-gold {
-    background: linear-gradient(135deg, hsl(43 85% 55%), hsl(43 90% 65%));
+    background: linear-gradient(135deg, hsl(42 90% 48%), hsl(42 95% 58%));
   }
 
   .gradient-wine {
-    background: linear-gradient(135deg, hsl(340 55% 28%), hsl(340 40% 38%));
+    background: linear-gradient(135deg, hsl(340 60% 28%), hsl(340 45% 40%));
   }
 
   .gradient-hero {
-    background: linear-gradient(135deg, hsl(40 30% 96%) 0%, hsl(43 60% 92%) 50%, hsl(40 30% 96%) 100%);
+    background: linear-gradient(135deg, hsl(38 35% 96%) 0%, hsl(42 60% 92%) 50%, hsl(38 35% 96%) 100%);
   }
 
   .text-gradient-gold {
-    background: linear-gradient(135deg, hsl(43 85% 50%), hsl(43 90% 60%));
+    background: linear-gradient(135deg, hsl(42 90% 48%), hsl(42 95% 60%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Page background escuro como no Figma */
+  .auth-bg {
+    background: #1a1a1a;
+  }
+
+  /* Card bege como no Figma */
+  .auth-card {
+    background: #F5F0E4;
   }
 }
