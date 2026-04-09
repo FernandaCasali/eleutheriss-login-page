@@ -1,11 +1,27 @@
 import { Button } from "@/components/ui/button";
 import heroWoman from "@/assets/hero-woman.png";
+import goldCoinsBg from "@/assets/gold-coins-bg.png";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
     <section id="inicio" className="relative min-h-screen flex items-center gradient-hero overflow-hidden pt-16">
+      {/* Gold coins background with gradient fade */}
+      <div className="absolute inset-0 pointer-events-none">
+        <img
+          src={goldCoinsBg}
+          alt=""
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          style={{
+            maskImage: "radial-gradient(ellipse 80% 70% at 60% 40%, black 20%, transparent 70%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 60% 40%, black 20%, transparent 70%)",
+          }}
+        />
+      </div>
+
       <div className="absolute inset-0 opacity-20">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
@@ -33,7 +49,7 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button variant="hero" size="lg" className="text-base" asChild>
                 <Link to="/cadastro">
-                  Começar Agora — É Grátis
+                  Começar Agora
                   <ArrowRight className="w-5 h-5 ml-1" />
                 </Link>
               </Button>
