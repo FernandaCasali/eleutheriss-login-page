@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Plus,
   TrendingUp,
@@ -7,12 +6,15 @@ import {
   DollarSign,
   PiggyBank,
   ShoppingBag,
-  LogOut,
   Calendar,
   ArrowUpRight,
   ArrowDownRight,
+  BookOpen,
+  Clock,
+  Target,
+  Flame,
 } from "lucide-react";
-import logoIcon from "@/assets/$.png";
+import DashboardSidebar from "@/components/DashboardSidebar";
 
 type Purchase = {
   id: number;
@@ -72,384 +74,306 @@ const Dashboard = () => {
     setShowForm(false);
   };
 
-  // Monthly progress bar
   const meta = 2000;
   const progressPct = Math.min((totalEconomia / meta) * 100, 100);
 
+  // Category breakdown
+  const categoryTotals = CATEGORIES.map((cat) => ({
+    name: cat,
+    total: purchases.filter((p) => p.type === "gasto" && p.category === cat).reduce((s, p) => s + p.amount, 0),
+  })).filter((c) => c.total > 0).sort((a, b) => b.total - a.total);
+
   return (
-    <div style={{ minHeight: "100vh", background: "#F5F0E4", fontFamily: "'Inter', sans-serif" }}>
-      {/* Header */}
-      <header
-        style={{
-          background: "linear-gradient(135deg, #1a1a1a 0%, #2a2520 100%)",
-          padding: "16px 24px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <img src={logoIcon} alt="Eleutheriss" style={{ width: 36, height: 36, objectFit: "contain" }} />
-          <span
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontWeight: 700,
-              fontSize: 20,
-              color: "#E8BE45",
-            }}
-          >
-            Eleutheriss
-          </span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ fontSize: 13, color: "#d4c9b0" }}>Olá, Usuária ✨</span>
-          <Link
-            to="/login"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              fontSize: 13,
-              color: "#E8BE45",
-              textDecoration: "none",
-              fontWeight: 600,
-            }}
-          >
-            <LogOut style={{ width: 14, height: 14 }} /> Sair
-          </Link>
-        </div>
-      </header>
+    <div className="flex min-h-screen" style={{ background: "#F5F0E4" }}>
+      <DashboardSidebar />
 
-      <main style={{ maxWidth: 1000, margin: "0 auto", padding: "28px 20px" }}>
-        {/* Greeting */}
-        <h1
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: 26,
-            fontWeight: 700,
-            color: "#1a1a1a",
-            margin: 0,
-            marginBottom: 4,
-          }}
-        >
-          Seu Painel Financeiro
-        </h1>
-        <p style={{ fontSize: 14, color: "#8B2246", fontWeight: 500, margin: 0, marginBottom: 24 }}>
-          Acompanhe seus gastos, economias e conquistas do mês 💪
-        </p>
+      <main className="flex-1 overflow-auto">
+        {/* Top bar */}
+        <header className="sticky top-0 z-10 bg-[#F5F0E4]/80 backdrop-blur-md border-b border-[#D9D0BE] px-8 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="font-display text-2xl font-bold text-[#1a1a1a]">Bom dia, Usuária ✨</h1>
+            <p className="text-sm text-[#8B2246] font-medium">Abril 2026 • Acompanhe seu progresso financeiro</p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 bg-[#E8BE45]/15 px-3 py-1.5 rounded-full">
+              <Flame className="w-4 h-4 text-[#E8BE45]" />
+              <span className="text-xs font-bold text-[#C89B30]">7 dias seguidos</span>
+            </div>
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#C89B30] to-[#E8BE45] flex items-center justify-center text-[#1a1a1a] font-bold text-sm">
+              U
+            </div>
+          </div>
+        </header>
 
-        {/* Summary Cards */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: 16,
-            marginBottom: 28,
-          }}
-        >
-          <SummaryCard
-            icon={<ShoppingBag style={{ width: 20, height: 20 }} />}
-            label="Total Gastos"
-            value={`R$ ${totalGastos.toLocaleString("pt-BR")}`}
-            color="#c0392b"
-            arrow={<ArrowDownRight style={{ width: 14, height: 14, color: "#c0392b" }} />}
-          />
-          <SummaryCard
-            icon={<PiggyBank style={{ width: 20, height: 20 }} />}
-            label="Total Economizado"
-            value={`R$ ${totalEconomia.toLocaleString("pt-BR")}`}
-            color="#27ae60"
-            arrow={<ArrowUpRight style={{ width: 14, height: 14, color: "#27ae60" }} />}
-          />
-          <SummaryCard
-            icon={<DollarSign style={{ width: 20, height: 20 }} />}
-            label="Saldo do Mês"
-            value={`R$ ${saldo.toLocaleString("pt-BR")}`}
-            color={saldo >= 0 ? "#27ae60" : "#c0392b"}
-            arrow={
-              saldo >= 0 ? (
-                <TrendingUp style={{ width: 14, height: 14, color: "#27ae60" }} />
-              ) : (
-                <TrendingDown style={{ width: 14, height: 14, color: "#c0392b" }} />
-              )
-            }
-          />
-        </div>
+        <div className="p-8 max-w-[1200px]">
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <SummaryCard
+              icon={<ShoppingBag className="w-5 h-5" />}
+              label="Total Gastos"
+              value={`R$ ${totalGastos.toLocaleString("pt-BR")}`}
+              trend="-12% vs mês passado"
+              color="#c0392b"
+              arrow={<ArrowDownRight className="w-4 h-4 text-[#c0392b]" />}
+            />
+            <SummaryCard
+              icon={<PiggyBank className="w-5 h-5" />}
+              label="Total Economizado"
+              value={`R$ ${totalEconomia.toLocaleString("pt-BR")}`}
+              trend="+8% vs mês passado"
+              color="#27ae60"
+              arrow={<ArrowUpRight className="w-4 h-4 text-[#27ae60]" />}
+            />
+            <SummaryCard
+              icon={<DollarSign className="w-5 h-5" />}
+              label="Saldo do Mês"
+              value={`R$ ${saldo.toLocaleString("pt-BR")}`}
+              trend={saldo >= 0 ? "Positivo!" : "Negativo"}
+              color={saldo >= 0 ? "#27ae60" : "#c0392b"}
+              arrow={
+                saldo >= 0
+                  ? <TrendingUp className="w-4 h-4 text-[#27ae60]" />
+                  : <TrendingDown className="w-4 h-4 text-[#c0392b]" />
+              }
+            />
+            <SummaryCard
+              icon={<Target className="w-5 h-5" />}
+              label="Meta Mensal"
+              value={`${progressPct.toFixed(0)}%`}
+              trend={`R$ ${totalEconomia.toLocaleString("pt-BR")} / R$ ${meta.toLocaleString("pt-BR")}`}
+              color="#C89B30"
+              arrow={<ArrowUpRight className="w-4 h-4 text-[#C89B30]" />}
+            />
+          </div>
 
-        {/* Progress */}
-        <div
-          style={{
-            background: "#fff",
-            borderRadius: 16,
-            padding: "20px 24px",
-            marginBottom: 28,
-            boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-            <div>
-              <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 600, margin: 0, color: "#1a1a1a" }}>
-                Meta de Economia do Mês
-              </h3>
-              <p style={{ fontSize: 12, color: "#8B2246", margin: 0 }}>
-                {progressPct.toFixed(0)}% da meta de R$ {meta.toLocaleString("pt-BR")}
+          {/* Middle row: Progress + Last Course + Categories */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+            {/* Progress bar */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-display text-base font-semibold text-[#1a1a1a]">Meta de Economia</h3>
+                <Calendar className="w-4 h-4 text-[#C89B30]" />
+              </div>
+              <div className="w-full h-3 bg-[#ece5d5] rounded-full overflow-hidden mb-2">
+                <div
+                  className="h-full rounded-full transition-all duration-700"
+                  style={{
+                    width: `${progressPct}%`,
+                    background: "linear-gradient(90deg, #C89B30, #E8BE45)",
+                  }}
+                />
+              </div>
+              <div className="flex justify-between text-xs text-[#8B7355]">
+                <span>R$ {totalEconomia.toLocaleString("pt-BR")}</span>
+                <span>R$ {meta.toLocaleString("pt-BR")}</span>
+              </div>
+              <p className="text-xs text-[#8B2246] mt-3 font-medium">
+                {progressPct >= 100
+                  ? "🎉 Parabéns! Meta atingida!"
+                  : `Faltam R$ ${(meta - totalEconomia).toLocaleString("pt-BR")} para sua meta`}
               </p>
             </div>
-            <Calendar style={{ width: 18, height: 18, color: "#C89B30" }} />
-          </div>
-          <div
-            style={{
-              width: "100%",
-              height: 14,
-              background: "#ece5d5",
-              borderRadius: 100,
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                width: `${progressPct}%`,
-                height: "100%",
-                background: "linear-gradient(90deg, #C89B30, #E8BE45)",
-                borderRadius: 100,
-                transition: "width 0.6s ease",
-              }}
-            />
-          </div>
-        </div>
 
-        {/* Add new + table */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <h2
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: 18,
-              fontWeight: 700,
-              margin: 0,
-              color: "#1a1a1a",
-            }}
-          >
-            Movimentações
-          </h2>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              background: "linear-gradient(135deg, #C89B30, #E8BE45)",
-              border: "none",
-              borderRadius: 100,
-              padding: "8px 18px",
-              fontSize: 13,
-              fontWeight: 700,
-              color: "#1a1a1a",
-              cursor: "pointer",
-            }}
-          >
-            <Plus style={{ width: 15, height: 15 }} /> Nova Entrada
-          </button>
-        </div>
-
-        {/* Form */}
-        {showForm && (
-          <form
-            onSubmit={handleAdd}
-            style={{
-              background: "#fff",
-              borderRadius: 14,
-              padding: "20px 24px",
-              marginBottom: 20,
-              boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 12,
-            }}
-          >
-            <input
-              placeholder="Descrição"
-              value={newPurchase.description}
-              onChange={(e) => setNewPurchase({ ...newPurchase, description: e.target.value })}
-              required
-              style={inputStyle}
-            />
-            <input
-              placeholder="Valor (R$)"
-              type="number"
-              step="0.01"
-              min="0"
-              value={newPurchase.amount}
-              onChange={(e) => setNewPurchase({ ...newPurchase, amount: e.target.value })}
-              required
-              style={inputStyle}
-            />
-            <select
-              value={newPurchase.category}
-              onChange={(e) => setNewPurchase({ ...newPurchase, category: e.target.value })}
-              style={inputStyle}
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c}>{c}</option>
-              ))}
-            </select>
-            <select
-              value={newPurchase.type}
-              onChange={(e) => setNewPurchase({ ...newPurchase, type: e.target.value as "gasto" | "economia" })}
-              style={inputStyle}
-            >
-              <option value="gasto">Gasto</option>
-              <option value="economia">Economia</option>
-            </select>
-            <div style={{ gridColumn: "1 / -1", display: "flex", justifyContent: "flex-end", gap: 8 }}>
-              <button
-                type="button"
-                onClick={() => setShowForm(false)}
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 100,
-                  border: "1.5px solid #D9D0BE",
-                  background: "transparent",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  color: "#6b6253",
-                  cursor: "pointer",
-                }}
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                style={{
-                  padding: "8px 20px",
-                  borderRadius: 100,
-                  border: "none",
-                  background: "linear-gradient(135deg, #C89B30, #E8BE45)",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: "#1a1a1a",
-                  cursor: "pointer",
-                }}
-              >
-                Salvar
+            {/* Last Course */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-display text-base font-semibold text-[#1a1a1a]">Último Curso Assistido</h3>
+                <BookOpen className="w-4 h-4 text-[#8B2246]" />
+              </div>
+              <div className="bg-[#F5F0E4] rounded-xl p-4">
+                <p className="text-sm font-semibold text-[#1a1a1a] mb-1">Finanças para Mulheres</p>
+                <p className="text-xs text-[#8B7355] mb-3">Módulo 3: Investimentos Básicos</p>
+                <div className="w-full h-2 bg-[#D9D0BE] rounded-full overflow-hidden mb-2">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: "65%",
+                      background: "linear-gradient(90deg, #8B2246, #c44569)",
+                    }}
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-[#8B7355]">65% concluído</span>
+                  <div className="flex items-center gap-1 text-[10px] text-[#8B7355]">
+                    <Clock className="w-3 h-3" />
+                    <span>2h restantes</span>
+                  </div>
+                </div>
+              </div>
+              <button className="mt-3 w-full text-xs font-semibold text-[#8B2246] hover:text-[#c44569] transition-colors text-center">
+                Continuar assistindo →
               </button>
             </div>
-          </form>
-        )}
 
-        {/* Table */}
-        <div
-          style={{
-            background: "#fff",
-            borderRadius: 14,
-            overflow: "hidden",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-          }}
-        >
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-            <thead>
-              <tr style={{ background: "#1a1a1a", color: "#E8BE45" }}>
-                <th style={thStyle}>Data</th>
-                <th style={thStyle}>Descrição</th>
-                <th style={thStyle}>Categoria</th>
-                <th style={{ ...thStyle, textAlign: "right" }}>Valor</th>
-                <th style={thStyle}>Tipo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {purchases.map((p) => (
-                <tr key={p.id} style={{ borderBottom: "1px solid #ece5d5" }}>
-                  <td style={tdStyle}>{new Date(p.date).toLocaleDateString("pt-BR")}</td>
-                  <td style={tdStyle}>{p.description}</td>
-                  <td style={tdStyle}>{p.category}</td>
-                  <td style={{ ...tdStyle, textAlign: "right", fontWeight: 600, color: p.type === "gasto" ? "#c0392b" : "#27ae60" }}>
-                    {p.type === "gasto" ? "- " : "+ "}R$ {p.amount.toLocaleString("pt-BR")}
-                  </td>
-                  <td style={tdStyle}>
-                    <span
-                      style={{
-                        display: "inline-block",
-                        padding: "2px 10px",
-                        borderRadius: 100,
-                        fontSize: 11,
-                        fontWeight: 600,
-                        background: p.type === "gasto" ? "#fdecea" : "#e8f5e9",
-                        color: p.type === "gasto" ? "#c0392b" : "#27ae60",
-                      }}
-                    >
-                      {p.type === "gasto" ? "Gasto" : "Economia"}
-                    </span>
-                  </td>
+            {/* Categories breakdown */}
+            <div className="bg-white rounded-2xl p-5 shadow-sm">
+              <h3 className="font-display text-base font-semibold text-[#1a1a1a] mb-3">Gastos por Categoria</h3>
+              <div className="flex flex-col gap-2.5">
+                {categoryTotals.length === 0 && (
+                  <p className="text-xs text-[#8B7355]">Nenhum gasto registrado</p>
+                )}
+                {categoryTotals.slice(0, 4).map((cat) => (
+                  <div key={cat.name}>
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="text-[#1a1a1a] font-medium">{cat.name}</span>
+                      <span className="text-[#8B7355]">R$ {cat.total.toLocaleString("pt-BR")}</span>
+                    </div>
+                    <div className="w-full h-2 bg-[#ece5d5] rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${Math.min((cat.total / totalGastos) * 100, 100)}%`,
+                          background: "linear-gradient(90deg, #C89B30, #E8BE45)",
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Transactions Section */}
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-display text-lg font-bold text-[#1a1a1a]">Movimentações</h2>
+            <button
+              onClick={() => setShowForm(!showForm)}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold text-[#1a1a1a] cursor-pointer"
+              style={{ background: "linear-gradient(135deg, #C89B30, #E8BE45)" }}
+            >
+              <Plus className="w-4 h-4" /> Nova Entrada
+            </button>
+          </div>
+
+          {/* Form */}
+          {showForm && (
+            <form
+              onSubmit={handleAdd}
+              className="bg-white rounded-2xl p-5 mb-4 shadow-sm grid grid-cols-1 sm:grid-cols-2 gap-3"
+            >
+              <input
+                placeholder="Descrição"
+                value={newPurchase.description}
+                onChange={(e) => setNewPurchase({ ...newPurchase, description: e.target.value })}
+                required
+                className="w-full h-10 px-3.5 border-[1.5px] border-[#D9D0BE] rounded-lg bg-[#FDFAF5] text-sm text-[#1a1a1a] outline-none"
+              />
+              <input
+                placeholder="Valor (R$)"
+                type="number"
+                step="0.01"
+                min="0"
+                value={newPurchase.amount}
+                onChange={(e) => setNewPurchase({ ...newPurchase, amount: e.target.value })}
+                required
+                className="w-full h-10 px-3.5 border-[1.5px] border-[#D9D0BE] rounded-lg bg-[#FDFAF5] text-sm text-[#1a1a1a] outline-none"
+              />
+              <select
+                value={newPurchase.category}
+                onChange={(e) => setNewPurchase({ ...newPurchase, category: e.target.value })}
+                className="w-full h-10 px-3.5 border-[1.5px] border-[#D9D0BE] rounded-lg bg-[#FDFAF5] text-sm text-[#1a1a1a] outline-none"
+              >
+                {CATEGORIES.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+              <select
+                value={newPurchase.type}
+                onChange={(e) => setNewPurchase({ ...newPurchase, type: e.target.value as "gasto" | "economia" })}
+                className="w-full h-10 px-3.5 border-[1.5px] border-[#D9D0BE] rounded-lg bg-[#FDFAF5] text-sm text-[#1a1a1a] outline-none"
+              >
+                <option value="gasto">Gasto</option>
+                <option value="economia">Economia</option>
+              </select>
+              <div className="sm:col-span-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  className="px-5 py-2 rounded-full border-[1.5px] border-[#D9D0BE] bg-transparent text-sm font-semibold text-[#6b6253] cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-full border-none text-sm font-bold text-[#1a1a1a] cursor-pointer"
+                  style={{ background: "linear-gradient(135deg, #C89B30, #E8BE45)" }}
+                >
+                  Salvar
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* Table */}
+          <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-[#1a1a1a] text-[#E8BE45]">
+                  <th className="px-4 py-3 text-left text-xs font-bold tracking-wide">Data</th>
+                  <th className="px-4 py-3 text-left text-xs font-bold tracking-wide">Descrição</th>
+                  <th className="px-4 py-3 text-left text-xs font-bold tracking-wide">Categoria</th>
+                  <th className="px-4 py-3 text-right text-xs font-bold tracking-wide">Valor</th>
+                  <th className="px-4 py-3 text-left text-xs font-bold tracking-wide">Tipo</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {purchases.map((p) => (
+                  <tr key={p.id} className="border-b border-[#ece5d5] hover:bg-[#FDFAF5] transition-colors">
+                    <td className="px-4 py-3 text-[#1a1a1a]">{new Date(p.date).toLocaleDateString("pt-BR")}</td>
+                    <td className="px-4 py-3 text-[#1a1a1a] font-medium">{p.description}</td>
+                    <td className="px-4 py-3 text-[#8B7355]">{p.category}</td>
+                    <td className={`px-4 py-3 text-right font-semibold ${p.type === "gasto" ? "text-[#c0392b]" : "text-[#27ae60]"}`}>
+                      {p.type === "gasto" ? "- " : "+ "}R$ {p.amount.toLocaleString("pt-BR")}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${
+                          p.type === "gasto"
+                            ? "bg-[#fdecea] text-[#c0392b]"
+                            : "bg-[#e8f5e9] text-[#27ae60]"
+                        }`}
+                      >
+                        {p.type === "gasto" ? "Gasto" : "Economia"}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
     </div>
   );
 };
 
-/* Small components */
+/* Summary Card */
 const SummaryCard = ({
   icon,
   label,
   value,
+  trend,
   color,
   arrow,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
+  trend: string;
   color: string;
   arrow: React.ReactNode;
 }) => (
-  <div
-    style={{
-      background: "#fff",
-      borderRadius: 16,
-      padding: "18px 20px",
-      boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-      display: "flex",
-      flexDirection: "column",
-      gap: 8,
-    }}
-  >
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-      <div style={{ width: 36, height: 36, borderRadius: 10, background: "#F5F0E4", display: "flex", alignItems: "center", justifyContent: "center", color: "#C89B30" }}>
+  <div className="bg-white rounded-2xl p-4 shadow-sm flex flex-col gap-2">
+    <div className="flex items-center justify-between">
+      <div className="w-9 h-9 rounded-xl bg-[#F5F0E4] flex items-center justify-center text-[#C89B30]">
         {icon}
       </div>
       {arrow}
     </div>
-    <span style={{ fontSize: 12, color: "#8B7355", fontWeight: 500 }}>{label}</span>
-    <span style={{ fontSize: 22, fontWeight: 700, color, fontFamily: "'Inter', sans-serif" }}>{value}</span>
+    <span className="text-xs text-[#8B7355] font-medium">{label}</span>
+    <span className="text-xl font-bold" style={{ color }}>{value}</span>
+    <span className="text-[10px] text-[#8B7355]">{trend}</span>
   </div>
 );
-
-const inputStyle: React.CSSProperties = {
-  width: "100%",
-  height: 42,
-  padding: "0 14px",
-  border: "1.5px solid #D9D0BE",
-  borderRadius: 10,
-  background: "#FDFAF5",
-  fontSize: 13,
-  color: "#1a1a1a",
-  outline: "none",
-  boxSizing: "border-box",
-  fontFamily: "inherit",
-};
-
-const thStyle: React.CSSProperties = {
-  padding: "12px 16px",
-  textAlign: "left",
-  fontSize: 12,
-  fontWeight: 700,
-  letterSpacing: "0.03em",
-};
-
-const tdStyle: React.CSSProperties = {
-  padding: "12px 16px",
-  color: "#1a1a1a",
-};
 
 export default Dashboard;
