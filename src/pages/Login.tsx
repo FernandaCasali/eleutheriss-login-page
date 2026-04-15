@@ -9,10 +9,11 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password, rememberMe });
+    navigate("/dashboard");
   };
 
   return (
